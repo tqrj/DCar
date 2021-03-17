@@ -1,0 +1,19 @@
+{
+  "name": "tqrj6/d-car",
+  "authors": [
+    {
+      "name": "tqrj",
+      "email": "tqrj666@gmail.com"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^7.2",
+    "imangazaliev/didom": "^1.16",
+    "catfan/medoo": "^1.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "DCar\\": "dcar"
+    }
+  }
+}
