@@ -1,39 +1,58 @@
 <?php
 require "vendor/autoload.php";
 
-/*$str = '<h1></h1><h3>222</h3>>';
-$dom = new \DiDom\Document($str);
-$node = $dom->find('h1')[0];
-$node->setAttribute('src','121');
-echo $dom->html();
 
-return*/
-/**
- * 要采集的文章链接放在这个数组里面
- */
-$articles = [
-    'https://zixuephp.net/article-517.html',
-    'https://zixuephp.net/article-516.html',
-    'https://zixuephp.net/article-504.html',
-    'https://zixuephp.net/article-501.html',
-    'https://zixuephp.net/article-516.html',
-];
+
+
+$articles = 'https://www.siammm.cn/archives/292
+https://www.siammm.cn/archives/291
+https://www.siammm.cn/archives/289
+https://www.siammm.cn/archives/288
+https://www.siammm.cn/archives/285
+https://www.siammm.cn/archives/283
+https://www.siammm.cn/archives/267
+https://www.siammm.cn/archives/265
+https://www.siammm.cn/archives/263
+https://www.siammm.cn/archives/256
+https://www.siammm.cn/archives/255
+https://www.siammm.cn/archives/254
+https://www.siammm.cn/archives/251
+https://www.siammm.cn/archives/248
+https://www.siammm.cn/archives/242
+https://www.siammm.cn/archives/240
+https://www.siammm.cn/archives/239
+https://www.siammm.cn/archives/236
+https://www.siammm.cn/archives/161
+https://www.siammm.cn/archives/221
+https://www.siammm.cn/archives/174';
+
+$articles = explode(PHP_EOL,$articles);
 
 
 /**
  * 标题选择器
  */
-$jsPathTitle ='body > div.article > div > div:nth-child(2) > div > div > h1';
+$jsPathTitle ='div.article-title > a';
 /**
  * 内容选择器
  */
-$jsPathContent = '#pcdetails';
+$jsPathContent = '.article-body';
 
 /**
  * 要过滤替换的 文字
  */
 $replaceStr = [
     '被替换的文字'=>'要替换的文字',
+];
+
+/**
+ * 删除 指定内容
+ */
+$jsPathDelS = [
+    '.article-copyright',
+    '.article-like',
+    '.article-share',
+    '.article-meta'
 ];
 
 
@@ -70,6 +89,7 @@ $DCar = new \DCar\DCar();
 $DCar->autoFilter(true);//自动过滤 空标题 空内容
 $DCar->setBanKeys($banKey);//过滤关键词
 $DCar->setReplace($replaceStr);//设置替换指定内容
+$DCar->setJsPathDelS($jsPathDelS);
 $DCar->setImgSrcDe($imgSrcPrefix);
 $count =  $DCar->collectArticles($articles,$jsPathTitle,$jsPathContent);//开始采集
 echo "采集完毕 采集数量：{$count}".PHP_EOL;

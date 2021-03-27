@@ -7,7 +7,9 @@ namespace DCar;
 interface DCarInterface
 {
 
-    public function setReplace(array $conf);
+    public function setReplace(array $strConf);
+
+    public function setJsPathDelS(array $jsPathDel);
 
     public function setBanKeys(array $conf);
 

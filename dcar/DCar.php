@@ -17,12 +17,19 @@ class DCar implements DCarInterface
 
     private array $replace = [];
 
+    private array $jsPathDelS = [];
+
     private string $imgSrcPrefix = '';
 
-    public function setReplace(array $conf)
+    public function setReplace(array $strConf)
     {
         // TODO: Implement RegExpReplace() method.
-        $this->replace = $conf;
+        $this->replace = $strConf;
+    }
+
+    public function setJsPathDelS(array $jsPathDel)
+    {
+        $this->jsPathDelS = $jsPathDel;
     }
 
     public function setBanKeys(array $conf)
@@ -42,6 +49,9 @@ class DCar implements DCarInterface
         // TODO: Implement capArticles() method.
 
         array_walk($articles,function ($articleUrl,$index,array $options)use ($jsPathTitle,$jsPathContent){
+            if(empty($articleUrl)){
+                return;
+            }
             $client = new Client();
             $response = $client->get($articleUrl,$options,);
             $dom = new Document($response->getBody()->getContents());
@@ -55,6 +65,13 @@ class DCar implements DCarInterface
                 foreach ($this->banKey as $key){
                     if (strpos($title[0]->text(),$key) !== false or strpos($content[0]->innerHtml(),$key) !== false){
                         return;
+                    }
+                }
+
+                foreach ($this->jsPathDelS as $jsPath){
+                    $nodes = $dom->find($jsPath);
+                    foreach ($nodes as $node){
+                        $node->remove();
                     }
                 }
 
@@ -77,9 +94,9 @@ class DCar implements DCarInterface
                     'to_ping'=>'',
                     'pinged'=>'',
                     'post_date'=>$date,
-                    'post_date_gmt'=>$date,
+//                    'post_date_gmt'=>$date,
                     'post_modified' =>$date,
-                    'post_modified_gmt' =>$date,
+//                    'post_modified_gmt' =>$date,
                     'post_content_filtered'=>'',
                     'post_parent'=>0,
                     'guid'=>'',
